@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An honest map of decentralized Bitcoin mining: P2Pool's history, why it stopped being viable, and the projects carrying that goal forward in 2026.">
+    <meta name="color-scheme" content="light dark">
+    <title>p2pool.org &mdash; Decentralized Bitcoin Mining</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+    <header>
+        <h1>p2pool.org</h1>
+        <p class="tagline">An honest map of decentralized Bitcoin mining.</p>
+    </header>
+
+    <section id="about">
+        <p>This is a steward page for the <em>p2pool.org</em> domain. P2Pool was a pioneering attempt at decentralized Bitcoin mining; it is no longer viable in its original form. This page exists to point visitors toward the projects carrying that goal forward in 2026, and to honestly describe where the work stands.</p>
+    </section>
+
+    <section id="history">
+        <h2>What P2Pool was</h2>
+        <p>P2Pool was a decentralized Bitcoin mining pool created by Forrest Voight in 2011. Instead of a central pool operator coordinating miners and distributing payouts, P2Pool ran its own peer-to-peer share chain, and paid every contributing miner directly inside each Bitcoin coinbase transaction. There was no operator to trust, no operator to seize funds, no operator to censor transactions.</p>
+        <p>For its time, it was a remarkable design &mdash; and the spiritual ancestor of every project listed below.</p>
+    </section>
+
+    <section id="why-died">
+        <h2>Why it stopped being viable</h2>
+        <p>Three structural problems made original P2Pool unworkable for small Bitcoin miners:</p>
+        <ul>
+            <li><strong>Variance.</strong> P2Pool's share chain ran at a higher effective difficulty than centralized pools, so a hobbyist contributing a few TH/s could go weeks without recording a share.</li>
+            <li><strong>Coinbase bloat.</strong> Paying thousands of miners directly inside the coinbase grew the generation transaction to a size that made P2Pool blocks less competitive to mine, eating into rewards.</li>
+            <li><strong>Dust economics.</strong> As Bitcoin transaction fees climbed, payouts to small miners became smaller than the cost of ever spending the resulting UTXO.</li>
+        </ul>
+        <p>The original P2Pool repository (<a href="https://github.com/forrestv/p2pool">github.com/forrestv/p2pool</a>) has been effectively dormant since the late 2010s.</p>
+        <p>Each of these problems has a modern answer being actively worked on. Uncle blocks reduce variance. Selective coinbase payouts to large miners control bloat. Atomic-swap markets clear the dust at the edges. The projects below are how the design space has moved on.</p>
+    </section>
+
+    <section id="state">
+        <h2>The state of decentralized mining in 2026</h2>
+        <p>The conversation today is less "rebuild P2Pool" and more "decompose what a pool actually does":</p>
+        <ul>
+            <li><strong>Template construction</strong> &mdash; who decides which transactions go in a block? Stratum V2 and DATUM push this from pools back to individual miners.</li>
+            <li><strong>Share accounting</strong> &mdash; how is each miner's work measured? P2Pool v2 uses uncle blocks; Braidpool uses a DAG-based share chain.</li>
+            <li><strong>Payout custody</strong> &mdash; who holds the coins between block-found and miner-paid? OCEAN and DMND minimize it; Monero's P2Pool eliminates it.</li>
+            <li><strong>Small-miner liquidity</strong> &mdash; what do you do with payouts that are smaller than the fee to spend them? P2Pool v2's atomic-swap share market is the most novel answer in this space; market makers take the dust-aggregation pain in exchange for the virgin-coin premium.</li>
+        </ul>
+        <p>A fully decentralized Bitcoin pool, in the original P2Pool spirit, requires progress on all three. As of mid-2026 no production system delivers all three for Bitcoin &mdash; but the pieces are coming together, and serious effort is going into each.</p>
+    </section>
+
+    <section id="projects">
+        <h2>Projects worth knowing</h2>
+
+        <article class="project">
+            <h3><a href="https://github.com/p2poolv2/p2poolv2">P2Pool v2</a></h3>
+            <p class="project-meta">Pool protocol &middot; Early development &middot; The direct reboot</p>
+            <p>A from-scratch reboot of P2Pool for Bitcoin, led by Kulpreet Singh. Written in Rust on libp2p and rust-bitcoin. Three design moves directly attack the problems that killed the original: <strong>uncle blocks</strong> (Ethereum-style, with GHOST-weighted consensus) so simultaneously-found shares both get credit and variance drops; <strong>direct coinbase payouts for the top N miners</strong> (up to ~500 outputs) so the largest contributors get paid non-custodially without bloating the coinbase to thousands of outputs; and an <strong>atomic-swap engine on the share chain</strong> so smaller miners can sell their shares to market makers for immediate liquid Bitcoin, sidestepping the dust problem without custody or covenants. Currently in testnet/signet experimentation; not yet production-ready for mainnet, but the project most directly aligned with reviving the original P2Pool thesis.</p>
+        </article>
+
+        <article class="project">
+            <h3><a href="https://stratumprotocol.org">Stratum V2</a></h3>
+            <p class="project-meta">Protocol &middot; Active deployment</p>
+            <p>Binary, encrypted successor to the Stratum mining protocol that has been used since 2012. Its critical contribution is letting individual miners &mdash; not pools &mdash; construct block templates. As of May 2026, pools representing roughly 75% of Bitcoin hashrate have signaled support, and the protocol is on track to be the default in new ASIC firmware in late 2026. Reference implementation: <a href="https://github.com/stratum-mining/stratum">stratum-mining/stratum</a>.</p>
+        </article>
+
+        <article class="project">
+            <h3><a href="https://ocean.xyz">OCEAN</a></h3>
+            <p class="project-meta">Pool &middot; Live &middot; Non-custodial, DATUM-enabled</p>
+            <p>A non-custodial Bitcoin mining pool led by Luke Dashjr. Pays miners directly from the network coinbase (no pool custody), and uses DATUM (Decentralized Alternative Templates for Universal Mining) to let participating miners build their own block templates. Transparent payout accounting via TIDES. The closest thing today to a "production decentralized pool" for Bitcoin.</p>
+        </article>
+
+        <article class="project">
+            <h3><a href="https://github.com/braidpool/braidpool">Braidpool</a></h3>
+            <p class="project-meta">Pool protocol &middot; Active development</p>
+            <p>An ambitious from-scratch decentralized pool design built around a DAG-based share chain that settles to Bitcoin at the end of each difficulty epoch (~2 weeks) via multisig. Each miner runs its own Bitcoin node and constructs its own templates. The closest spiritual successor to P2Pool, with modern thinking on share accounting and payout. Under active development; not yet in production.</p>
+        </article>
+
+        <article class="project">
+            <h3><a href="https://www.dmnd.work">DMND (Demand Pool)</a></h3>
+            <p class="project-meta">Pool &middot; Launching &middot; First Stratum V2 production pool</p>
+            <p>The first Bitcoin pool architected from day one for Stratum V2. End-to-end encryption against hashrate hijacking, and a transparent "SLICE" payout system. Operator-run and VC-backed, so less radical than Braidpool, but a meaningful step toward Stratum V2 at production scale.</p>
+        </article>
+
+        <article class="project">
+            <h3><a href="https://web.public-pool.io">Public Pool</a></h3>
+            <p class="project-meta">Solo pool &middot; Live &middot; Bitaxe-friendly, zero-fee</p>
+            <p>A community-run, open-source solo mining coordinator with zero fees and no registration, by Benjamin Wilson. The default destination for Bitaxe and other open-source small miners, and self-hostable on Umbrel or Start9. Not a shared-reward pool &mdash; if your miner finds a block, you take the whole block &mdash; but the most accessible on-ramp for hobbyist miners who want sovereignty over centralized convenience.</p>
+        </article>
+
+        <article class="project">
+            <h3><a href="https://p2pool.io">P2Pool (Monero)</a></h3>
+            <p class="project-meta">Pool &middot; Live &middot; The P2Pool model, applied to a fee-friendly chain</p>
+            <p>SChernykh's adaptation of the P2Pool model to Monero &mdash; the chain it actually fits on. Monero's small fees, short block times, and dynamic block size avoid the dust, variance, and coinbase-bloat problems that killed Bitcoin P2Pool. Worth studying as a working production example of the original P2Pool thesis.</p>
+        </article>
+    </section>
+
+    <section id="further">
+        <h2>Further reading</h2>
+        <ul>
+            <li><a href="https://bitcoinops.org/en/topics/pooled-mining/">Bitcoin Optech: Pooled mining topic</a> &mdash; a running index of relevant proposals and discussion.</li>
+            <li><a href="https://github.com/braidpool/braidpool/blob/main/docs/braidpool_spec.md">Braidpool specification</a> &mdash; the most detailed living design doc for a from-scratch decentralized Bitcoin pool.</li>
+            <li><a href="https://stratumprotocol.org/specification/">Stratum V2 specification</a> &mdash; the protocol the rest of the stack increasingly runs on.</li>
+            <li><a href="https://github.com/forrestv/p2pool">Forrest Voight's original P2Pool</a> &mdash; historical reference. Dormant.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>This site is independent. It is not the original P2Pool project, and is not affiliated with any of the projects listed above.</p>
+        <p>Corrections welcome &mdash; <a href="https://github.com/treib-holdings/p2pool.org/issues">open an issue on GitHub</a>.</p>
+        <p>No tracking. No analytics. No JavaScript. <a href="https://github.com/treib-holdings/p2pool.org">Source on GitHub</a> &mdash; one HTML file and one CSS file.</p>
+        <p>Last updated: May 2026.</p>
+    </footer>
+</main>
+</body>
+</html>
