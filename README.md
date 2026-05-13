@@ -12,4 +12,4 @@ Open an [issue](https://github.com/treib-holdings/p2pool.org/issues) or a pull r
 
 ## Deployment
 
-The site is hosted on GitHub Pages with `p2pool.org` as a custom domain. See [DEPLOY.md](DEPLOY.md) for the full setup, and a self-hosted DigitalOcean alternative.
+Hosted on GitHub Pages with `p2pool.org` as a custom domain.
