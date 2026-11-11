@@ -36,10 +36,10 @@
         <p>Three structural problems made original P2Pool unworkable for small Bitcoin miners:</p>
         <ul>
             <li><strong>Variance.</strong> P2Pool's share chain ran at a higher effective difficulty than centralized pools, so a hobbyist contributing a few TH/s could go weeks without recording a share.</li>
-            <li><strong>Coinbase bloat.</strong> Paying thousands of miners directly inside the coinbase grew the generation transaction to a size that made P2Pool blocks less competitive to mine, eating into rewards.</li>
+            <li><strong>Coinbase bloat.</strong> Paying every miner directly inside the coinbase grew the generation transaction. A typical block paid a few hundred addresses, and the largest (block 236,962, in May 2013) paid 553 in a 19 kB coinbase. That size made P2Pool blocks less competitive to mine, eating into rewards.</li>
             <li><strong>Dust economics.</strong> As Bitcoin transaction fees climbed, payouts to small miners became smaller than the cost of ever spending the resulting UTXO.</li>
         </ul>
-        <p>The original P2Pool repository (<a href="https://github.com/forrestv/p2pool">github.com/forrestv/p2pool</a>) has been effectively dormant since the late 2010s.</p>
+        <p>The original P2Pool repository (<a href="https://github.com/forrestv/p2pool">github.com/forrestv/p2pool</a>) has been effectively dormant since the late 2010s. The network itself has not quite stopped. It still finds about one Bitcoin block a year: seven between the start of 2020 and June 2026, the last of them paying 52 addresses.</p>
         <p>Each of these problems has a modern answer being actively worked on. Uncle blocks reduce variance. Selective coinbase payouts to large miners control bloat. Atomic-swap markets clear the dust at the edges. The projects below are how the design space has moved on.</p>
     </section>
 
@@ -52,7 +52,7 @@
             <li><strong>Payout custody</strong> &mdash; who holds the coins between block-found and miner-paid? OCEAN and DMND minimize it; Monero's P2Pool eliminates it.</li>
             <li><strong>Small-miner liquidity</strong> &mdash; what do you do with payouts that are smaller than the fee to spend them? P2Pool v2's atomic-swap share market is the most novel answer in this space; market makers take the dust-aggregation pain in exchange for the virgin-coin premium.</li>
         </ul>
-        <p>A fully decentralized Bitcoin pool, in the original P2Pool spirit, requires progress on all three. As of mid-2026 no production system delivers all three for Bitcoin &mdash; but the pieces are coming together, and serious effort is going into each.</p>
+        <p>A fully decentralized Bitcoin pool, in the original P2Pool spirit, requires progress on all four. As of mid-2026 no production system delivers all four for Bitcoin, but the pieces are coming together, and serious effort is going into each.</p>
     </section>
 
     <section id="projects">
@@ -108,7 +108,7 @@
             <li><a href="https://github.com/braidpool/braidpool/blob/main/docs/braidpool_spec.md">Braidpool specification</a> &mdash; the most detailed living design doc for a from-scratch decentralized Bitcoin pool.</li>
             <li><a href="https://stratumprotocol.org/specification/">Stratum V2 specification</a> &mdash; the protocol the rest of the stack increasingly runs on.</li>
             <li><a href="https://github.com/forrestv/p2pool">Forrest Voight's original P2Pool</a> &mdash; historical reference. Dormant.</li>
-            <li><a href="https://chainquery.com/sources/p2pool-miners">ChainQuery: P2Pool miners</a> &mdash; 17,335 historical P2Pool mining addresses with confidence scores, derived from coinbase analysis and recovered pool coordination logs. The companion <a href="https://chainquery.com/address/">address lookup</a> resolves any of them to a current balance and attribution. <em>By the same author as this page.</em></li>
+            <li><a href="https://chainquery.com/sources/p2pool-miners">ChainQuery: P2Pool miners</a> &mdash; more than 17,000 historical P2Pool mining addresses with confidence scores, derived from coinbase analysis and recovered pool coordination logs. The companion <a href="https://chainquery.com/address/">address lookup</a> resolves any of them to a current balance and attribution. <em>By the same author as this page.</em></li>
         </ul>
     </section>
 
@@ -116,7 +116,7 @@
         <p>This site is independent. It is not the original P2Pool project, and is not affiliated with any of the projects listed above.</p>
         <p>Corrections welcome &mdash; <a href="https://github.com/treib-holdings/p2pool.org/issues">open an issue on GitHub</a>.</p>
         <p>Aggregate visit counts via <a href="https://plausible.io">Plausible</a> &mdash; no cookies, no fingerprinting, no personal data. <a href="https://github.com/treib-holdings/p2pool.org">Source on GitHub</a>.</p>
-        <p>Last updated: May 2026.</p>
+        <p>Last updated: November 2026.</p>
     </footer>
 </main>
 </body>
